@@ -23,9 +23,13 @@ public:
 
 	//Send geometry to the renderer
 	void displayScene();
-
-	void changeToTriangleScene();
-	void changeToCircleScene();
+	void changeToP1Level1();
+	void changeToP1Level2();
+	void changeToP1Level3();
+	void changetoP1Level4();
+	void changetoP1Level5();
+	void changetoP1Level6();
+	void changeToCircleScene(int iter);
 
 	void iterationUp();
 	void iterationDown();

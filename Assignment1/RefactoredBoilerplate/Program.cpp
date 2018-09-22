@@ -109,10 +109,10 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 
 	Program* program = (Program*)glfwGetWindowUserPointer(window);
 	if (key == GLFW_KEY_1 && action == GLFW_PRESS) {
-		program->getScene()->changeToTriangleScene();
+		program->getScene()->changeToP1Level1();
 	}
 	if (key == GLFW_KEY_2 && action == GLFW_PRESS) {
-		program->getScene()->changeToCircleScene();
+		program->getScene()->changeToCircleScene(1);
 	}
 	if (key == GLFW_KEY_UP && action == GLFW_PRESS) {
 		program->getScene()->iterationUp();
