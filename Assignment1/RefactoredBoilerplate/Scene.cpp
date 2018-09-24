@@ -8,6 +8,7 @@
 #include "Scene.h"
 
 #include <iostream>
+using namespace std;
 #include "RenderingEngine.h"
 
 #include <glm/glm.hpp>
@@ -48,7 +49,7 @@ void Scene::changeToP1Level1()
 	square0.colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
 	square0.colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
 	square0.colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
-	
+
 
 	square0.drawMode = GL_LINES;
 
@@ -274,7 +275,7 @@ void Scene::changetoP1Level4()
 	objects.push_back(square7);
 }
 
-void Scene::changetoP1Level5() 
+void Scene::changetoP1Level5()
 {
 	sceneType = "TRIANGLE_SCENE4";
 
@@ -420,9 +421,9 @@ void Scene::changeToCircleScene(int iter)
 	for (float u = 0; u < (((iter-1)*2) + 6) * 3.14f; u += du)
 	{
 		//vertex at this value of u
-		circle.verts.push_back(glm::vec3(1 * sin(u)*u*0.01 ,1 * cos(u)*u*0.01, 1.0));
+		circle.verts.push_back(glm::vec3((1 * cos(u)*u)*(0.02),(1 * sin(u)*u)*(0.02) , 1.0));
 		//color at this value of u
-		circle.colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+		circle.colors.push_back(glm::vec3(1.0f-(0.05f*u), 0.0f, 0.0f));
 	}
 
 	circle.drawMode = GL_LINE_STRIP;
@@ -495,7 +496,7 @@ void Scene::makeMengerSquare(float x, float y, int iter, int iter1)
 		square0.verts.push_back(glm::vec3(x, y - 2 / pow(3, iter1), 1.0f));
 		square0.verts.push_back(glm::vec3(x + 2 / pow(3, iter1), y, 1.0f));
 		square0.verts.push_back(glm::vec3(x + 2 / pow(3, iter1), y - 2 / pow(3, iter1), 1.0f));
-		
+
 
 		//Colors are stored per vertex in the order of the vertices
 		square0.colors.push_back(glm::vec3(0.0f, 0.0f, 0.4f));
@@ -518,7 +519,7 @@ void Scene::makeMengerSquare(float x, float y, int iter, int iter1)
 		//Create a single triangle
 		//Additional triangles can be created by pushing groups of three more vertices into the verts vector
 		Geometry square1;
-		
+
 		square1.verts.push_back(glm::vec3(x + 2 / pow(3, iter1), y, 1.0f));
 		square1.verts.push_back(glm::vec3(x + 2 / pow(3, iter1), y - 2 / pow(3, iter1), 1.0f));
 		square1.verts.push_back(glm::vec3(x + 2 * (2 / pow(3, iter1)), y, 1.0f));
@@ -573,9 +574,9 @@ void Scene::makeMengerSquare(float x, float y, int iter, int iter1)
 		square3.verts.push_back(glm::vec3(x, y - 2 / pow(3, iter1), 1.0f));
 		square3.verts.push_back(glm::vec3(x + 2 / pow(3, iter1), y - 2 * (2 / pow(3, iter1)), 1.0f));
 		square3.verts.push_back(glm::vec3(x + 2 / pow(3, iter1), y - 2 / pow(3, iter1), 1.0f));
-		
-		
-		
+
+
+
 
 
 		//Colors are stored per vertex in the order of the vertices
@@ -595,7 +596,7 @@ void Scene::makeMengerSquare(float x, float y, int iter, int iter1)
 
 		objects.push_back(square3);
 
-		
+
 
 		Geometry square4;
 
@@ -698,13 +699,55 @@ void Scene::makeMengerSquare(float x, float y, int iter, int iter1)
 		objects.push_back(square7);
 
 	}
-	
+
+}
+
+void Scene::changeToSierpTriangle(int iter){
+	objects.clear();
+	float currentX = 0.0f;
+	float currentY = 1.0f;
+	Geometry point;
+	for (float u = 0; u < iter; u += 1)
+	{
+
+		int randInt = rand() % 3;
+
+		if(randInt == 0){
+			currentX = currentX/2;
+			currentY = (currentY + 1.0f)/2;
+
+
+
+
+
+		} else if(randInt == 1){
+			currentX = (currentX + -1.0f)/2;
+			currentY = (currentY + -1.0f)/2;
+
+		} else {
+			currentX = (currentX + 1.0f)/2;
+			currentY = (currentY + -1.0f)/2;
+		}
+
+		point.verts.push_back(glm::vec3(currentX,currentY, 1.0f));
+		point.colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+		point.drawMode = GL_POINTS;
+
+		//Construct vao and vbos for the triangle
+		RenderingEngine::assignBuffers(point);
+
+		//Send the triangle data to the GPU
+		//Must be done every time the triangle is modified in any way, ex. verts, colors, normals, uvs, etc.
+		RenderingEngine::setBufferData(point);
+
+		objects.push_back(point);
+	}
 }
 
 
 void Scene::iterationUp()
 {
-	
+
 	if (sceneType == "TRIANGLE_SCENE")
 	{
 		changeToP1Level2();

@@ -9,7 +9,8 @@
 #define SCENE_H_
 
 #include <vector>
-
+#include <string>
+#include <cstring>
 #include "Geometry.h"
 
 //Forward declaration of classes
@@ -31,6 +32,7 @@ public:
 	void changetoP1Level6();
 	void changeToCircleScene(int iter);
 	void makeMengerSquare(float x, float y, int iter, int iter1);
+	void changeToSierpTriangle(int iter);
 	void iterationUp();
 	void iterationDown();
 
