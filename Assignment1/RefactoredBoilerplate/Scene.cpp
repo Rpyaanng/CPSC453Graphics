@@ -37,30 +37,30 @@ void Scene::changeToP1Level1()
 	objects.clear();
 	//Create a single triangle
 	//Additional triangles can be created by pushing groups of three more vertices into the verts vector
-	Geometry squareP;
-	squareP.verts.push_back(glm::vec3(-1.0f, -1.0f, 1.0f));
-	squareP.verts.push_back(glm::vec3(-1.0f, 1.0f, 1.0f));
-	squareP.verts.push_back(glm::vec3(1.0f, -1.0f, 1.0f));
-	squareP.verts.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
+	Geometry square0;
+	square0.verts.push_back(glm::vec3(-1.0f, -1.0f, 1.0f));
+	square0.verts.push_back(glm::vec3(-1.0f, 1.0f, 1.0f));
+	square0.verts.push_back(glm::vec3(1.0f, -1.0f, 1.0f));
+	square0.verts.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
 
 	//Colors are stored per vertex in the order of the vertices
-	squareP.colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
-	squareP.colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
-	squareP.colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
-	squareP.colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+	square0.colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+	square0.colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+	square0.colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+	square0.colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
 	
 
-	squareP.drawMode = GL_LINES;
+	square0.drawMode = GL_LINES;
 
 	//Construct vao and vbos for the triangle
-	RenderingEngine::assignBuffers(squareP);
+	RenderingEngine::assignBuffers(square0);
 
 	//Send the triangle data to the GPU
 	//Must be done every time the triangle is modified in any way, ex. verts, colors, normals, uvs, etc.
-	RenderingEngine::setBufferData(squareP);
+	RenderingEngine::setBufferData(square0);
 
 	//Add the triangle to the scene objects
-	objects.push_back(squareP);
+	objects.push_back(square0);
 
 	//Create a single triangle
 	//Additional triangles can be created by pushing groups of three more vertices into the verts vector
@@ -457,6 +457,36 @@ void Scene::makeMengerSquare(float x, float y, int iter, int iter1)
 		makeMengerSquare(x + 2 / pow(3, iter1), y - 2 * (2 / pow(3, iter1)), iter - 1, iter1 + 1);
 		makeMengerSquare(x + 2 * (2 / pow(3, iter1)), y - 2 * (2 / pow(3, iter1)), iter - 1, iter1 + 1);
 	}
+	else if (iter == 0) {
+		sceneType = "MENGER_SCENE";
+		objects.clear();
+		//Create a single triangle
+		//Additional triangles can be created by pushing groups of three more vertices into the verts vector
+		Geometry square0;
+		square0.verts.push_back(glm::vec3(-1.0f, -1.0f, 1.0f));
+		square0.verts.push_back(glm::vec3(-1.0f, 1.0f, 1.0f));
+		square0.verts.push_back(glm::vec3(1.0f, -1.0f, 1.0f));
+		square0.verts.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
+
+		//Colors are stored per vertex in the order of the vertices
+		square0.colors.push_back(glm::vec3(0.3f, 0.3f, 0.3f));
+		square0.colors.push_back(glm::vec3(0.3f, 0.3f, 0.3f));
+		square0.colors.push_back(glm::vec3(0.3f, 0.3f, 0.3f));
+		square0.colors.push_back(glm::vec3(0.3f, 0.3f, 0.3f));
+
+
+		square0.drawMode = GL_TRIANGLE_STRIP;
+
+		//Construct vao and vbos for the triangle
+		RenderingEngine::assignBuffers(square0);
+
+		//Send the triangle data to the GPU
+		//Must be done every time the triangle is modified in any way, ex. verts, colors, normals, uvs, etc.
+		RenderingEngine::setBufferData(square0);
+
+		//Add the triangle to the scene objects
+		objects.push_back(square0);
+	}
 	else {
 		//Create a single triangle
 		//Additional triangles can be created by pushing groups of three more vertices into the verts vector
@@ -468,10 +498,10 @@ void Scene::makeMengerSquare(float x, float y, int iter, int iter1)
 		
 
 		//Colors are stored per vertex in the order of the vertices
-		square0.colors.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
-		square0.colors.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
-		square0.colors.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
-		square0.colors.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
+		square0.colors.push_back(glm::vec3(0.0f, 0.0f, 0.4f));
+		square0.colors.push_back(glm::vec3(0.0f, 0.0f, 0.4f));
+		square0.colors.push_back(glm::vec3(0.0f, 0.0f, 0.4f));
+		square0.colors.push_back(glm::vec3(0.0f, 0.0f, 0.4f));
 
 
 		square0.drawMode = GL_TRIANGLE_STRIP;
@@ -495,10 +525,10 @@ void Scene::makeMengerSquare(float x, float y, int iter, int iter1)
 		square1.verts.push_back(glm::vec3(x + 2 * (2 / pow(3, iter1)), y - 2 / pow(3, iter1), 1.0f));
 
 		//Colors are stored per vertex in the order of the vertices
-		square1.colors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
-		square1.colors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
-		square1.colors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
-		square1.colors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
+		square1.colors.push_back(glm::vec3(0.4f, 0.4f, 0.4f));
+		square1.colors.push_back(glm::vec3(0.4f, 0.4f, 0.4f));
+		square1.colors.push_back(glm::vec3(0.4f, 0.4f, 0.4f));
+		square1.colors.push_back(glm::vec3(0.4f, 0.4f, 0.4f));
 
 		square1.drawMode = GL_TRIANGLE_STRIP;
 
@@ -520,10 +550,10 @@ void Scene::makeMengerSquare(float x, float y, int iter, int iter1)
 
 
 		//Colors are stored per vertex in the order of the vertices
-		square2.colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
-		square2.colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
-		square2.colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
-		square2.colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+		square2.colors.push_back(glm::vec3(0.4f, 0.0f, 0.0f));
+		square2.colors.push_back(glm::vec3(0.4f, 0.0f, 0.0f));
+		square2.colors.push_back(glm::vec3(0.4f, 0.0f, 0.0f));
+		square2.colors.push_back(glm::vec3(0.4f, 0.0f, 0.0f));
 
 		square2.drawMode = GL_TRIANGLE_STRIP;
 
@@ -549,10 +579,10 @@ void Scene::makeMengerSquare(float x, float y, int iter, int iter1)
 
 
 		//Colors are stored per vertex in the order of the vertices
-		square3.colors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
-		square3.colors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
-		square3.colors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
-		square3.colors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
+		square3.colors.push_back(glm::vec3(0.4f, 0.4f, 0.4f));
+		square3.colors.push_back(glm::vec3(0.4f, 0.4f, 0.4f));
+		square3.colors.push_back(glm::vec3(0.4f, 0.4f, 0.4f));
+		square3.colors.push_back(glm::vec3(0.4f, 0.4f, 0.4f));
 
 		square3.drawMode = GL_TRIANGLE_STRIP;
 
@@ -578,10 +608,10 @@ void Scene::makeMengerSquare(float x, float y, int iter, int iter1)
 
 
 		//Colors are stored per vertex in the order of the vertices
-		square4.colors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
-		square4.colors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
-		square4.colors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
-		square4.colors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
+		square4.colors.push_back(glm::vec3(0.4f, 0.4f, 0.4f));
+		square4.colors.push_back(glm::vec3(0.4f, 0.4f, 0.4f));
+		square4.colors.push_back(glm::vec3(0.4f, 0.4f, 0.4f));
+		square4.colors.push_back(glm::vec3(0.4f, 0.4f, 0.4f));
 
 		square4.drawMode = GL_TRIANGLE_STRIP;
 
@@ -603,10 +633,10 @@ void Scene::makeMengerSquare(float x, float y, int iter, int iter1)
 		square5.verts.push_back(glm::vec3(x + 2 / pow(3, iter1), y - 2 * (2 / pow(3, iter1)), 1.0f));
 
 		//Colors are stored per vertex in the order of the vertices
-		square5.colors.push_back(glm::vec3(0.3f, 0.0f, 0.3f));
-		square5.colors.push_back(glm::vec3(0.3f, 0.0f, 0.3f));
-		square5.colors.push_back(glm::vec3(0.3f, 0.0f, 0.3f));
-		square5.colors.push_back(glm::vec3(0.3f, 0.0f, 0.3f));
+		square5.colors.push_back(glm::vec3(0.3f, 0.0f, 0.4f));
+		square5.colors.push_back(glm::vec3(0.3f, 0.0f, 0.4f));
+		square5.colors.push_back(glm::vec3(0.3f, 0.0f, 0.4f));
+		square5.colors.push_back(glm::vec3(0.3f, 0.0f, 0.4f));
 
 		square5.drawMode = GL_TRIANGLE_STRIP;
 
@@ -627,10 +657,10 @@ void Scene::makeMengerSquare(float x, float y, int iter, int iter1)
 		square6.verts.push_back(glm::vec3(x + 2 * (2 / pow(3, iter1)), y - 2 * (2 / pow(3, iter1)), 1.0f));
 
 		//Colors are stored per vertex in the order of the vertices
-		square6.colors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
-		square6.colors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
-		square6.colors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
-		square6.colors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
+		square6.colors.push_back(glm::vec3(0.4f, 0.4f, 0.4f));
+		square6.colors.push_back(glm::vec3(0.4f, 0.4f, 0.4f));
+		square6.colors.push_back(glm::vec3(0.4f, 0.4f, 0.4f));
+		square6.colors.push_back(glm::vec3(0.4f, 0.4f, 0.4f));
 
 		square6.drawMode = GL_TRIANGLE_STRIP;
 
@@ -651,10 +681,10 @@ void Scene::makeMengerSquare(float x, float y, int iter, int iter1)
 		square7.verts.push_back(glm::vec3(x + 3 * (2 / pow(3, iter1)), y - 2 * (2 / pow(3, iter1)), 1.0f));
 
 		//Colors are stored per vertex in the order of the vertices
-		square7.colors.push_back(glm::vec3(0.0f, 0.6f, 0.0f));
-		square7.colors.push_back(glm::vec3(0.0f, 0.6f, 0.0f));
-		square7.colors.push_back(glm::vec3(0.0f, 0.6f, 0.0f));
-		square7.colors.push_back(glm::vec3(0.0f, 0.6f, 0.0f));
+		square7.colors.push_back(glm::vec3(0.0f, 0.4f, 0.0f));
+		square7.colors.push_back(glm::vec3(0.0f, 0.4f, 0.0f));
+		square7.colors.push_back(glm::vec3(0.0f, 0.4f, 0.0f));
+		square7.colors.push_back(glm::vec3(0.0f, 0.4f, 0.0f));
 
 		square7.drawMode = GL_TRIANGLE_STRIP;
 
@@ -666,7 +696,6 @@ void Scene::makeMengerSquare(float x, float y, int iter, int iter1)
 		RenderingEngine::setBufferData(square7);
 
 		objects.push_back(square7);
-
 
 	}
 	
@@ -711,6 +740,36 @@ void Scene::iterationUp()
 	else if (sceneType == "CIRCLE_SCENE4")
 	{
 		changeToCircleScene(5);
+	}
+	else if (sceneType == "MENGER_SCENE")
+	{
+		sceneType = "MENGER_SCENE1";
+		makeMengerSquare(-1.0f, 1.0f, 1, 1);
+	}
+	else if (sceneType == "MENGER_SCENE1")
+	{
+		sceneType = "MENGER_SCENE2";
+		makeMengerSquare(-1.0f, 1.0f, 2, 1);
+	}
+	else if (sceneType == "MENGER_SCENE2")
+	{
+		sceneType = "MENGER_SCENE3";
+		makeMengerSquare(-1.0f, 1.0f, 3, 1);
+	}
+	else if (sceneType == "MENGER_SCENE3")
+	{
+		sceneType = "MENGER_SCENE4";
+		makeMengerSquare(-1.0f, 1.0f, 4, 1);
+	}
+	else if (sceneType == "MENGER_SCENE4")
+	{
+		sceneType = "MENGER_SCENE5";
+		makeMengerSquare(-1.0f, 1.0f, 5, 1);
+	}
+	else if (sceneType == "MENGER_SCENE5")
+	{
+		sceneType = "MENGER_SCENE6";
+		makeMengerSquare(-1.0f, 1.0f, 6, 1);
 	}
 }
 
@@ -759,4 +818,35 @@ void Scene::iterationDown()
 	{
 		changeToCircleScene(3);
 	}
+	else if (sceneType == "MENGER_SCENE1")
+	{
+		sceneType = "MENGER_SCENE";
+		makeMengerSquare(-1.0f, 1.0f, 0, 1);
+	}
+	else if (sceneType == "MENGER_SCENE2")
+	{
+		sceneType = "MENGER_SCENE1";
+		makeMengerSquare(-1.0f, 1.0f, 1, 1);
+	}
+	else if (sceneType == "MENGER_SCENE3")
+	{
+		sceneType = "MENGER_SCENE2";
+		makeMengerSquare(-1.0f, 1.0f, 2, 1);
+	}
+	else if (sceneType == "MENGER_SCENE4")
+	{
+		sceneType = "MENGER_SCENE3";
+		makeMengerSquare(-1.0f, 1.0f, 3, 1);
+	}
+	else if (sceneType == "MENGER_SCENE5")
+	{
+		sceneType = "MENGER_SCENE4";
+		makeMengerSquare(-1.0f, 1.0f, 4, 1);
+	}
+	else if (sceneType == "MENGER_SCENE6")
+	{
+		sceneType = "MENGER_SCENE5";
+		makeMengerSquare(-1.0f, 1.0f, 5, 1);
+	}
+
 }
