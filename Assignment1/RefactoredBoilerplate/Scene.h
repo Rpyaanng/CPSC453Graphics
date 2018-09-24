@@ -30,7 +30,7 @@ public:
 	void changetoP1Level5();
 	void changetoP1Level6();
 	void changeToCircleScene(int iter);
-
+	void makeMengerSquare(float x, float y, int iter, int iter1);
 	void iterationUp();
 	void iterationDown();
 

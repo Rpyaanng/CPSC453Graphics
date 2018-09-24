@@ -37,30 +37,30 @@ void Scene::changeToP1Level1()
 	objects.clear();
 	//Create a single triangle
 	//Additional triangles can be created by pushing groups of three more vertices into the verts vector
-	Geometry square0;
-	square0.verts.push_back(glm::vec3(-1.0f, -1.0f, 1.0f));
-	square0.verts.push_back(glm::vec3(-1.0f, 1.0f, 1.0f));
-	square0.verts.push_back(glm::vec3(1.0f, -1.0f, 1.0f));
-	square0.verts.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
+	Geometry squareP;
+	squareP.verts.push_back(glm::vec3(-1.0f, -1.0f, 1.0f));
+	squareP.verts.push_back(glm::vec3(-1.0f, 1.0f, 1.0f));
+	squareP.verts.push_back(glm::vec3(1.0f, -1.0f, 1.0f));
+	squareP.verts.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
 
 	//Colors are stored per vertex in the order of the vertices
-	square0.colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
-	square0.colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
-	square0.colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
-	square0.colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+	squareP.colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+	squareP.colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+	squareP.colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+	squareP.colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
 	
 
-	square0.drawMode = GL_LINES;
+	squareP.drawMode = GL_LINES;
 
 	//Construct vao and vbos for the triangle
-	RenderingEngine::assignBuffers(square0);
+	RenderingEngine::assignBuffers(squareP);
 
 	//Send the triangle data to the GPU
 	//Must be done every time the triangle is modified in any way, ex. verts, colors, normals, uvs, etc.
-	RenderingEngine::setBufferData(square0);
+	RenderingEngine::setBufferData(squareP);
 
 	//Add the triangle to the scene objects
-	objects.push_back(square0);
+	objects.push_back(squareP);
 
 	//Create a single triangle
 	//Additional triangles can be created by pushing groups of three more vertices into the verts vector
@@ -399,8 +399,16 @@ void Scene::changetoP1Level6()
 
 void Scene::changeToCircleScene(int iter)
 {
-	sceneType = "CIRCLE_SCENE";
-
+	switch (iter) {
+		case 1: sceneType = "CIRCLE_SCENE";
+			break;
+		case 2: sceneType = "CIRCLE_SCENE1";
+			break;
+		case 3: sceneType = "CIRCLE_SCENE2";
+			break;
+		case 4: sceneType = "CIRCLE_SCENE3";
+			break;
+	}
 
 	objects.clear();
 
@@ -412,7 +420,7 @@ void Scene::changeToCircleScene(int iter)
 	for (float u = 0; u < (((iter-1)*2) + 6) * 3.14f; u += du)
 	{
 		//vertex at this value of u
-		circle.verts.push_back(glm::vec3(1 * cos(u)*u*0.01, 1 * sin(u)*u*0.01, 1.0));
+		circle.verts.push_back(glm::vec3(1 * sin(u)*u*0.01 ,1 * cos(u)*u*0.01, 1.0));
 		//color at this value of u
 		circle.colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
 	}
@@ -429,6 +437,241 @@ void Scene::changeToCircleScene(int iter)
 	//Add the triangle to the scene objects
 	objects.push_back(circle);
 }
+
+void Scene::makeMengerSquare(float x, float y, int iter, int iter1)
+{
+	if (iter1 == 1) {
+		objects.clear();
+	}
+	if (iter > 1) {
+
+		makeMengerSquare(x, y, iter - 1, iter1 + 1);
+		makeMengerSquare(x + 2 / pow(3, iter1), y, iter - 1, iter1 + 1);
+		makeMengerSquare(x + 2 * (2 / pow(3, iter1)), y, iter - 1, iter1 + 1);
+
+		makeMengerSquare(x, y - 2 / pow(3, iter1), iter - 1, iter1 + 1);
+		// blank space
+		makeMengerSquare(x + 2 * (2 / pow(3, iter1)), y - 2 / pow(3, iter1), iter - 1, iter1 + 1);
+
+		makeMengerSquare(x, y - 2 * (2 / pow(3, iter1)), iter - 1, iter1 + 1);
+		makeMengerSquare(x + 2 / pow(3, iter1), y - 2 * (2 / pow(3, iter1)), iter - 1, iter1 + 1);
+		makeMengerSquare(x + 2 * (2 / pow(3, iter1)), y - 2 * (2 / pow(3, iter1)), iter - 1, iter1 + 1);
+	}
+	else {
+		//Create a single triangle
+		//Additional triangles can be created by pushing groups of three more vertices into the verts vector
+		Geometry square0;
+		square0.verts.push_back(glm::vec3(x, y, 1.0f));
+		square0.verts.push_back(glm::vec3(x, y - 2 / pow(3, iter1), 1.0f));
+		square0.verts.push_back(glm::vec3(x + 2 / pow(3, iter1), y, 1.0f));
+		square0.verts.push_back(glm::vec3(x + 2 / pow(3, iter1), y - 2 / pow(3, iter1), 1.0f));
+		
+
+		//Colors are stored per vertex in the order of the vertices
+		square0.colors.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
+		square0.colors.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
+		square0.colors.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
+		square0.colors.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
+
+
+		square0.drawMode = GL_TRIANGLE_STRIP;
+
+		//Construct vao and vbos for the triangle
+		RenderingEngine::assignBuffers(square0);
+
+		//Send the triangle data to the GPU
+		//Must be done every time the triangle is modified in any way, ex. verts, colors, normals, uvs, etc.
+		RenderingEngine::setBufferData(square0);
+
+		objects.push_back(square0);
+
+		//Create a single triangle
+		//Additional triangles can be created by pushing groups of three more vertices into the verts vector
+		Geometry square1;
+		
+		square1.verts.push_back(glm::vec3(x + 2 / pow(3, iter1), y, 1.0f));
+		square1.verts.push_back(glm::vec3(x + 2 / pow(3, iter1), y - 2 / pow(3, iter1), 1.0f));
+		square1.verts.push_back(glm::vec3(x + 2 * (2 / pow(3, iter1)), y, 1.0f));
+		square1.verts.push_back(glm::vec3(x + 2 * (2 / pow(3, iter1)), y - 2 / pow(3, iter1), 1.0f));
+
+		//Colors are stored per vertex in the order of the vertices
+		square1.colors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
+		square1.colors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
+		square1.colors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
+		square1.colors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
+
+		square1.drawMode = GL_TRIANGLE_STRIP;
+
+		//Construct vao and vbos for the triangle
+		RenderingEngine::assignBuffers(square1);
+
+		//Send the triangle data to the GPU
+		//Must be done every time the triangle is modified in any way, ex. verts, colors, normals, uvs, etc.
+		RenderingEngine::setBufferData(square1);
+
+		objects.push_back(square1);
+
+		Geometry square2;
+
+		square2.verts.push_back(glm::vec3(x + 2 * (2 / pow(3, iter1)), y, 1.0f));
+		square2.verts.push_back(glm::vec3(x + 2 * (2 / pow(3, iter1)), y - 2 / pow(3, iter1), 1.0f));
+		square2.verts.push_back(glm::vec3(x + 3 * (2 / pow(3, iter1)), y, 1.0f));
+		square2.verts.push_back(glm::vec3(x + 3 * (2 / pow(3, iter1)), y - 2 / pow(3, iter1), 1.0f));
+
+
+		//Colors are stored per vertex in the order of the vertices
+		square2.colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+		square2.colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+		square2.colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+		square2.colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+
+		square2.drawMode = GL_TRIANGLE_STRIP;
+
+		//Construct vao and vbos for the triangle
+		RenderingEngine::assignBuffers(square2);
+
+		//Send the triangle data to the GPU
+		//Must be done every time the triangle is modified in any way, ex. verts, colors, normals, uvs, etc.
+		RenderingEngine::setBufferData(square2);
+
+		objects.push_back(square2);
+
+		//Create a single triangle
+		//Additional triangles can be created by pushing groups of three more vertices into the verts vector
+		Geometry square3;
+		square3.verts.push_back(glm::vec3(x, y - 2 * (2 / pow(3, iter1)), 1.0f));
+		square3.verts.push_back(glm::vec3(x, y - 2 / pow(3, iter1), 1.0f));
+		square3.verts.push_back(glm::vec3(x + 2 / pow(3, iter1), y - 2 * (2 / pow(3, iter1)), 1.0f));
+		square3.verts.push_back(glm::vec3(x + 2 / pow(3, iter1), y - 2 / pow(3, iter1), 1.0f));
+		
+		
+		
+
+
+		//Colors are stored per vertex in the order of the vertices
+		square3.colors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
+		square3.colors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
+		square3.colors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
+		square3.colors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
+
+		square3.drawMode = GL_TRIANGLE_STRIP;
+
+		//Construct vao and vbos for the triangle
+		RenderingEngine::assignBuffers(square3);
+
+		//Send the triangle data to the GPU
+		//Must be done every time the triangle is modified in any way, ex. verts, colors, normals, uvs, etc.
+		RenderingEngine::setBufferData(square3);
+
+		objects.push_back(square3);
+
+		
+
+		Geometry square4;
+
+		square4.verts.push_back(glm::vec3(x + 2 * (2 / pow(3, iter1)), y - 2 * (2 / pow(3, iter1)), 1.0f));
+		square4.verts.push_back(glm::vec3(x + 2 * (2 / pow(3, iter1)), y - 2 / pow(3, iter1), 1.0f));
+		square4.verts.push_back(glm::vec3(x + 3 * (2 / pow(3, iter1)), y - 2 * (2 / pow(3, iter1)), 1.0f));
+		square4.verts.push_back(glm::vec3(x + 3 * (2 / pow(3, iter1)), y - 2 / pow(3, iter1), 1.0f));
+
+
+
+
+		//Colors are stored per vertex in the order of the vertices
+		square4.colors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
+		square4.colors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
+		square4.colors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
+		square4.colors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
+
+		square4.drawMode = GL_TRIANGLE_STRIP;
+
+		//Construct vao and vbos for the triangle
+		RenderingEngine::assignBuffers(square4);
+
+		//Send the triangle data to the GPU
+		//Must be done every time the triangle is modified in any way, ex. verts, colors, normals, uvs, etc.
+		RenderingEngine::setBufferData(square4);
+
+		objects.push_back(square4);
+
+		//Create a single triangle
+		//Additional triangles can be created by pushing groups of three more vertices into the verts vector
+		Geometry square5;
+		square5.verts.push_back(glm::vec3(x, y - 3 * (2 / pow(3, iter1)), 1.0f));
+		square5.verts.push_back(glm::vec3(x, y - 2 * (2 / pow(3, iter1)), 1.0f));
+		square5.verts.push_back(glm::vec3(x + 2 / pow(3, iter1), y - 3 * (2 / pow(3, iter1)), 1.0f));
+		square5.verts.push_back(glm::vec3(x + 2 / pow(3, iter1), y - 2 * (2 / pow(3, iter1)), 1.0f));
+
+		//Colors are stored per vertex in the order of the vertices
+		square5.colors.push_back(glm::vec3(0.3f, 0.0f, 0.3f));
+		square5.colors.push_back(glm::vec3(0.3f, 0.0f, 0.3f));
+		square5.colors.push_back(glm::vec3(0.3f, 0.0f, 0.3f));
+		square5.colors.push_back(glm::vec3(0.3f, 0.0f, 0.3f));
+
+		square5.drawMode = GL_TRIANGLE_STRIP;
+
+		//Construct vao and vbos for the triangle
+		RenderingEngine::assignBuffers(square5);
+
+		//Send the triangle data to the GPU
+		//Must be done every time the triangle is modified in any way, ex. verts, colors, normals, uvs, etc.
+		RenderingEngine::setBufferData(square5);
+
+		objects.push_back(square5);
+
+		Geometry square6;
+
+		square6.verts.push_back(glm::vec3(x + (2 / pow(3, iter1)), y - 3 * (2 / pow(3, iter1)), 1.0f));
+		square6.verts.push_back(glm::vec3(x + (2 / pow(3, iter1)), y - 2 * (2 / pow(3, iter1)), 1.0f));
+		square6.verts.push_back(glm::vec3(x + 2 * (2 / pow(3, iter1)), y - 3 * (2 / pow(3, iter1)), 1.0f));
+		square6.verts.push_back(glm::vec3(x + 2 * (2 / pow(3, iter1)), y - 2 * (2 / pow(3, iter1)), 1.0f));
+
+		//Colors are stored per vertex in the order of the vertices
+		square6.colors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
+		square6.colors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
+		square6.colors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
+		square6.colors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
+
+		square6.drawMode = GL_TRIANGLE_STRIP;
+
+		//Construct vao and vbos for the triangle
+		RenderingEngine::assignBuffers(square6);
+
+		//Send the triangle data to the GPU
+		//Must be done every time the triangle is modified in any way, ex. verts, colors, normals, uvs, etc.
+		RenderingEngine::setBufferData(square6);
+
+		objects.push_back(square6);
+
+		Geometry square7;
+
+		square7.verts.push_back(glm::vec3(x + 2 * (2 / pow(3, iter1)), y - 3 * (2 / pow(3, iter1)), 1.0f));
+		square7.verts.push_back(glm::vec3(x + 2 * (2 / pow(3, iter1)), y - 2 * (2 / pow(3, iter1)), 1.0f));
+		square7.verts.push_back(glm::vec3(x + 3 * (2 / pow(3, iter1)), y - 3 * (2 / pow(3, iter1)), 1.0f));
+		square7.verts.push_back(glm::vec3(x + 3 * (2 / pow(3, iter1)), y - 2 * (2 / pow(3, iter1)), 1.0f));
+
+		//Colors are stored per vertex in the order of the vertices
+		square7.colors.push_back(glm::vec3(0.0f, 0.6f, 0.0f));
+		square7.colors.push_back(glm::vec3(0.0f, 0.6f, 0.0f));
+		square7.colors.push_back(glm::vec3(0.0f, 0.6f, 0.0f));
+		square7.colors.push_back(glm::vec3(0.0f, 0.6f, 0.0f));
+
+		square7.drawMode = GL_TRIANGLE_STRIP;
+
+		//Construct vao and vbos for the triangle
+		RenderingEngine::assignBuffers(square7);
+
+		//Send the triangle data to the GPU
+		//Must be done every time the triangle is modified in any way, ex. verts, colors, normals, uvs, etc.
+		RenderingEngine::setBufferData(square7);
+
+		objects.push_back(square7);
+
+
+	}
+	
+}
+
 
 void Scene::iterationUp()
 {
@@ -465,6 +708,10 @@ void Scene::iterationUp()
 	{
 		changeToCircleScene(4);
 	}
+	else if (sceneType == "CIRCLE_SCENE4")
+	{
+		changeToCircleScene(5);
+	}
 }
 
 void Scene::iterationDown()
@@ -500,8 +747,16 @@ void Scene::iterationDown()
 		changetoP1Level4();
 		changetoP1Level5();
 	}
-	else if (sceneType == "CIRCLE_SCENE")
+	else if (sceneType == "CIRCLE_SCENE1")
 	{
-		std::cout << "iteration down for circle scene! Implement me!" << std::endl;
+		changeToCircleScene(1);
+	}
+	else if (sceneType == "CIRCLE_SCENE2")
+	{
+		changeToCircleScene(2);
+	}
+	else if (sceneType == "CIRCLE_SCENE3")
+	{
+		changeToCircleScene(3);
 	}
 }
